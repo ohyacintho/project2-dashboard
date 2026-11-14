@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+  <title>제조 부품 입고검사 품질 대시보드 포털 | Project 2</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+      background: #f1f5f9;
+      color: #0f172a;
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+    .portal-container {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+    header {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 36px 32px 28px;
+      margin-bottom: 24px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .eyebrow {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #0284c7;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: inline-block;
+      background: #e0f2fe;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 15px;
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+    .kpi-summary-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 18px;
+    }
+    .kpi-mini-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .kpi-mini-card span {
+      display: block;
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .kpi-mini-card strong {
+      font-size: 17px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .dash-card {
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      padding: 30px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+    .dash-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.08);
+      border-color: #38bdf8;
+    }
+    .card-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 14px;
+      align-self: flex-start;
+    }
+    .tag-blue { background: #e0f2fe; color: #0369a1; }
+    .tag-teal { background: #ccfbf1; color: #0f766e; }
+    .card-title {
+      font-size: 21px;
+      font-weight: 750;
+      color: #0f172a;
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+    .card-sub {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+    .card-desc {
+      font-size: 14px;
+      color: #475569;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+    .card-desc ul {
+      padding-left: 18px;
+      margin-top: 8px;
+    }
+    .card-desc li {
+      margin-bottom: 6px;
+    }
+    .badge-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 22px;
+    }
+    .badge-item {
+      font-size: 11px;
+      background: #f1f5f9;
+      color: #475569;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .btn-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0284c7;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 13px 20px;
+      border-radius: 10px;
+      transition: background 0.2s ease;
+      box-shadow: 0 2px 4px rgba(2, 132, 199, 0.25);
+    }
+    .btn-link:hover {
+      background: #0369a1;
+    }
+    .btn-link.teal {
+      background: #0d9488;
+      box-shadow: 0 2px 4px rgba(13, 148, 136, 0.25);
+    }
+    .btn-link.teal:hover {
+      background: #0f766e;
+    }
+    footer {
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+      padding-top: 12px;
+    }
+    @media (max-width: 768px) {
+      .kpi-summary-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .dashboard-grid { grid-template-columns: 1fr; }
+      header { padding: 24px 20px; }
+      h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="portal-container">
+    <header>
+      <span class="eyebrow">Incoming Inspection Quality Portal</span>
+      <h1>제조 부품 입고검사 품질 대시보드 포털</h1>
+      <p class="subtitle">협력사 A · B · C 6,000건 전수 검사 데이터 분석 및 재계약 검토 통합 웹 포털 (Cloudflare Pages 배포용)</p>
+      
+      <div class="kpi-summary-row">
+        <div class="kpi-mini-card">
+          <span>분석 대상</span>
+          <strong>협력사 A · B · C (3개사)</strong>
+        </div>
+        <div class="kpi-mini-card">
+          <span>검사 총 수량</span>
+          <strong>6,000건 전수 (0결측)</strong>
+        </div>
+        <div class="kpi-mini-card">
+          <span>종합 불량률</span>
+          <strong style="color: #e11d48;">4.95% (297건 불량)</strong>
+        </div>
+        <div class="kpi-mini-card">
+          <span>데이터 연동 방식</span>
+          <strong style="color: #0284c7;">100% 내장 (Self-contained)</strong>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-grid">
+      <!-- 02회차 대시보드 -->
+      <article class="dash-card">
+        <div>
+          <span class="card-tag tag-blue">02회차 분석 · 기본 EDA</span>
+          <h2 class="card-title">01. 기본 품질 현황 & 조건별 탐색 대시보드</h2>
+          <p class="card-sub">Inspection Exploratory Data Analysis Dashboard</p>
+          <div class="card-desc">
+            입고검사 전수 데이터의 기초 통계와 다차원 동적 필터링을 제공하는 기본 분석 대시보드입니다.
+            <ul>
+              <li><strong>협력사 · 주차 · 불량여부</strong> 다중 인터랙티브 필터 및 초기화 기능</li>
+              <li>총 검사수량, 판정 가능 수량, 불량 수량, <strong>종합 불량률 실시간 KPI 카드</strong> 집계</li>
+              <li>불량 유형별(치수, 외관, 중량 등) 발생 빈도 요약 및 협력사별 비교 통계표</li>
+            </ul>
+          </div>
+          <div class="badge-list">
+            <span class="badge-item">실시간 필터</span>
+            <span class="badge-item">순수 Vanilla JS</span>
+            <span class="badge-item">데이터 완전 내장</span>
+            <span class="badge-item">오프라인 구동</span>
+          </div>
+        </div>
+        <a href="./inspection-eda/inspection_dashboard.html" class="btn-link">
+          02회차 대시보드 열기 &nbsp;→
+        </a>
+      </article>
+
+      <!-- 03회차 대시보드 -->
+      <article class="dash-card">
+        <div>
+          <span class="card-tag tag-teal">03회차 분석 · 협력사 재계약 검토</span>
+          <h2 class="card-title">02. 협력사 재계약 검토 & 심화 분석 대시보드</h2>
+          <p class="card-sub">Supplier Contract Renewal Review & In-depth Analysis</p>
+          <div class="card-desc">
+            협력사별 품질 편차, 공구 마모 드리프트, 재계약 검토의견 및 2차원 산점도를 통합 제공합니다.
+            <ul>
+              <li><strong>01 협력사별 품질 수준:</strong> 치수 통계표, 반응형 SVG 히스토그램 & 박스플롯</li>
+              <li><strong>02 A사 집중 점검:</strong> 1주 vs 8주차 치수 드리프트, 라인/작업조 히트맵 (주차별 필터)</li>
+              <li><strong>03 협력사 검토 의견:</strong> 핵심 결론 3가지, 재계약 의견 & 근거 비교표</li>
+              <li><strong>04 추가 실습 (1~4번):</strong> 중량 품질, <strong>치수-중량 2차원 산점도(규격 윈도우)</strong>, 구간폭, 로트 불량률, 공식 실사 질의서</li>
+            </ul>
+          </div>
+          <div class="badge-list">
+            <span class="badge-item">5개 멀티 탭</span>
+            <span class="badge-item">SVG 벡터 차트</span>
+            <span class="badge-item">2차원 규격 윈도우</span>
+            <span class="badge-item">Base64 이미지 내장</span>
+          </div>
+        </div>
+        <a href="./supplier-review/supplier_review.html" class="btn-link teal">
+          03회차 대시보드 열기 &nbsp;→
+        </a>
+      </article>
+    </main>
+
+    <footer>
+      <p>제조 품질 데이터 분석 실습 포털 &nbsp;·&nbsp; Cloudflare Pages 배포용 정적 웹사이트</p>
+    </footer>
+  </div>
+</body>
+</html>
