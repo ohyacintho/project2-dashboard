@@ -77,7 +77,7 @@
     }
     .dashboard-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
       gap: 24px;
       margin-bottom: 24px;
     }
@@ -265,6 +265,33 @@
         </div>
         <a href="./supplier-review/supplier_review.html" class="btn-link teal">
           03회차 대시보드 열기 &nbsp;→
+        </a>
+      </article>
+
+      <!-- 04회차 대시보드 -->
+      <article class="dash-card">
+        <div>
+          <span class="card-tag" style="background: #f3e8ff; color: #7e22ce;">04회차 분석 · 생산조건 상관관계</span>
+          <h2 class="card-title">03. 생산조건-품질 상관관계 심화 대시보드</h2>
+          <p class="card-sub">Process Condition vs Quality Correlation Dashboard</p>
+          <div class="card-desc">
+            가공시간, 공구 누적가공수, 설비별 데이터와 품질(치수·중량) 간 상관관계 및 공정 이상 원인을 추적합니다.
+            <ul>
+              <li><strong>인터랙티브 산점도:</strong> 축 변수(가공시간, 치수, 중량, 공구수) 자유 선택 및 협력사별 필터링</li>
+              <li><strong>실시간 상관 통계:</strong> 표본 수, 피어슨 상관계수(r), 회귀 기울기, 잔차 표준편차(퍼짐도) 실시간 산출</li>
+              <li><strong>심화 분석 정밀 차트:</strong> 4변수 히트맵, 심슨의 역설(전체 vs 층화), A사 4대 설비 마모 드리프트 비교</li>
+              <li><strong>공식 감사 질의서:</strong> 공구 수명 관리 기준, 가공속도 제어, 설비별 점검 항목 체크리스트</li>
+            </ul>
+          </div>
+          <div class="badge-list">
+            <span class="badge-item">SVG 동적 산점도</span>
+            <span class="badge-item">축 변수 동적 전환</span>
+            <span class="badge-item">심슨의 역설 규명</span>
+            <span class="badge-item">오프라인 단독 구동</span>
+          </div>
+        </div>
+        <a href="./correlation-dashboard/correlation_dashboard.html" class="btn-link" style="background: #7e22ce; box-shadow: 0 2px 4px rgba(126, 34, 206, 0.25);">
+          04회차 대시보드 열기 &nbsp;→
         </a>
       </article>
     </main>
