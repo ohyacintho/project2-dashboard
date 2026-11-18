@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
-  <title>제조 부품 입고검사 품질 대시보드 포털 | Project 2</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+  <title>Project2 대시보드</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -15,7 +15,7 @@
       padding: 40px 20px;
     }
     .portal-container {
-      max-width: 1040px;
+      max-width: 1080px;
       margin: 0 auto;
     }
     header {
@@ -71,13 +71,13 @@
       margin-bottom: 4px;
     }
     .kpi-mini-card strong {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 700;
       color: #0f172a;
     }
     .dashboard-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 24px;
       margin-bottom: 24px;
     }
@@ -108,6 +108,8 @@
     }
     .tag-blue { background: #e0f2fe; color: #0369a1; }
     .tag-teal { background: #ccfbf1; color: #0f766e; }
+    .tag-purple { background: #f3e8ff; color: #7e22ce; }
+    .tag-indigo { background: #e0e7ff; color: #3730a3; }
     .card-title {
       font-size: 21px;
       font-weight: 750;
@@ -173,6 +175,20 @@
     .btn-link.teal:hover {
       background: #0f766e;
     }
+    .btn-link.purple {
+      background: #7e22ce;
+      box-shadow: 0 2px 4px rgba(126, 34, 206, 0.25);
+    }
+    .btn-link.purple:hover {
+      background: #6b21a8;
+    }
+    .btn-link.indigo {
+      background: #2563eb;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+    }
+    .btn-link.indigo:hover {
+      background: #1d4ed8;
+    }
     footer {
       text-align: center;
       font-size: 13px;
@@ -190,26 +206,26 @@
 <body>
   <div class="portal-container">
     <header>
-      <span class="eyebrow">Incoming Inspection Quality Portal</span>
-      <h1>제조 부품 입고검사 품질 대시보드 포털</h1>
-      <p class="subtitle">협력사 A · B · C 6,000건 전수 검사 데이터 분석 및 재계약 검토 통합 웹 포털 (Cloudflare Pages 배포용)</p>
+      <span class="eyebrow">Project 2 Integrated Dashboard Portal</span>
+      <h1>Project2 대시보드</h1>
+      <p class="subtitle">제조 부품 품질 검사부터 카페 매장 주문량 머신러닝 예측까지 통합 데이터 분석 포털 (Cloudflare Pages 배포용)</p>
       
       <div class="kpi-summary-row">
         <div class="kpi-mini-card">
-          <span>분석 대상</span>
-          <strong>협력사 A · B · C (3개사)</strong>
+          <span>포털 수록 회차</span>
+          <strong>02회 ~ 05회차 (4개 주제)</strong>
         </div>
         <div class="kpi-mini-card">
-          <span>검사 총 수량</span>
-          <strong>6,000건 전수 (0결측)</strong>
+          <span>제조 품질 데이터</span>
+          <strong>6,000건 전수 (A·B·C사)</strong>
         </div>
         <div class="kpi-mini-card">
-          <span>종합 불량률</span>
-          <strong style="color: #e11d48;">4.95% (297건 불량)</strong>
+          <span>매장 주문 예측 데이터</span>
+          <strong>3,650건 (5개 매장 2개년)</strong>
         </div>
         <div class="kpi-mini-card">
-          <span>데이터 연동 방식</span>
-          <strong style="color: #0284c7;">100% 내장 (Self-contained)</strong>
+          <span>배포 환경</span>
+          <strong style="color: #0284c7;">Cloudflare Pages</strong>
         </div>
       </div>
     </header>
@@ -253,7 +269,7 @@
               <li><strong>01 협력사별 품질 수준:</strong> 치수 통계표, 반응형 SVG 히스토그램 & 박스플롯</li>
               <li><strong>02 A사 집중 점검:</strong> 1주 vs 8주차 치수 드리프트, 라인/작업조 히트맵 (주차별 필터)</li>
               <li><strong>03 협력사 검토 의견:</strong> 핵심 결론 3가지, 재계약 의견 & 근거 비교표</li>
-              <li><strong>04 추가 실습 (1~4번):</strong> 중량 품질, <strong>치수-중량 2차원 산점도(규격 윈도우)</strong>, 구간폭, 로트 불량률, 공식 실사 질의서</li>
+              <li><strong>04 추가 실습 (1~4번):</strong> 중량 품질, <strong>치수-중량 2차원 산점도(규격 윈도우)</strong></li>
             </ul>
           </div>
           <div class="badge-list">
@@ -271,16 +287,16 @@
       <!-- 04회차 대시보드 -->
       <article class="dash-card">
         <div>
-          <span class="card-tag" style="background: #f3e8ff; color: #7e22ce;">04회차 분석 · 생산조건 상관관계</span>
+          <span class="card-tag tag-purple">04회차 분석 · 생산조건 상관관계</span>
           <h2 class="card-title">03. 생산조건-품질 상관관계 심화 대시보드</h2>
           <p class="card-sub">Process Condition vs Quality Correlation Dashboard</p>
           <div class="card-desc">
             가공시간, 공구 누적가공수, 설비별 데이터와 품질(치수·중량) 간 상관관계 및 공정 이상 원인을 추적합니다.
             <ul>
               <li><strong>인터랙티브 산점도:</strong> 축 변수(가공시간, 치수, 중량, 공구수) 자유 선택 및 협력사별 필터링</li>
-              <li><strong>실시간 상관 통계:</strong> 표본 수, 피어슨 상관계수(r), 회귀 기울기, 잔차 표준편차(퍼짐도) 실시간 산출</li>
-              <li><strong>심화 분석 정밀 차트:</strong> 4변수 히트맵, 심슨의 역설(전체 vs 층화), A사 4대 설비 마모 드리프트 비교</li>
-              <li><strong>공식 감사 질의서:</strong> 공구 수명 관리 기준, 가공속도 제어, 설비별 점검 항목 체크리스트</li>
+              <li><strong>실시간 상관 통계:</strong> 표본 수, 피어슨 상관계수(r), 회귀 기울기, 잔차 표준편차 실시간 산출</li>
+              <li><strong>심화 분석 정밀 차트:</strong> 4변수 히트맵, 심슨의 역설(전체 vs 층화), 설비별 마모 비교</li>
+              <li><strong>공식 감사 질의서:</strong> 공구 수명 관리 기준, 가공속도 제어 점검 체크리스트</li>
             </ul>
           </div>
           <div class="badge-list">
@@ -290,14 +306,41 @@
             <span class="badge-item">오프라인 단독 구동</span>
           </div>
         </div>
-        <a href="./correlation-dashboard/correlation_dashboard.html" class="btn-link" style="background: #7e22ce; box-shadow: 0 2px 4px rgba(126, 34, 206, 0.25);">
+        <a href="./correlation-dashboard/correlation_dashboard.html" class="btn-link purple">
           04회차 대시보드 열기 &nbsp;→
+        </a>
+      </article>
+
+      <!-- 05회차 대시보드 (신규 추가) -->
+      <article class="dash-card">
+        <div>
+          <span class="card-tag tag-indigo">05회차 분석 · 머신러닝 회귀 예측</span>
+          <h2 class="card-title">04. 카페 매장 주문량 예측 검토 대시보드</h2>
+          <p class="card-sub">Store Orders Machine Learning Forecast & Review Dashboard</p>
+          <div class="card-desc">
+            카페 브랜드 5개 매장의 과거 2년치 실적을 기반으로 익일 주문건수를 예측하는 선형회귀 모델 대시보드입니다.
+            <ul>
+              <li><strong>매장 선택 필터 (전체 포함):</strong> 매장별 실제 vs 예측 일일 추이 라인 차트 및 KPI 실시간 갱신</li>
+              <li><strong>회귀계수 주요 해석:</strong> 영업예정시간(+21.6건/h), 예정할인율(+23.0건/10%p), 토요일 피크(+53.2건)</li>
+              <li><strong>학습 vs 평가 기간 분리:</strong> 학습 현황(히트맵)과 평가 기간(산점도 및 Top 오차 기록) 구분 제공</li>
+              <li><strong>오차 심층 분석:</strong> 여름철(7~8월) 잠실역 과소 예측 원인 및 공휴일(광복절) 강남역 과대 예측 리스크</li>
+            </ul>
+          </div>
+          <div class="badge-list">
+            <span class="badge-item">매장별 동적 필터</span>
+            <span class="badge-item">Chart.js 인터랙티브</span>
+            <span class="badge-item">선형회귀 모델</span>
+            <span class="badge-item">실시간 오차 분석</span>
+          </div>
+        </div>
+        <a href="./orders-forecast/orders_dashboard.html" class="btn-link indigo">
+          05회차 대시보드 열기 &nbsp;→
         </a>
       </article>
     </main>
 
     <footer>
-      <p>제조 품질 데이터 분석 실습 포털 &nbsp;·&nbsp; Cloudflare Pages 배포용 정적 웹사이트</p>
+      <p>Project 2 데이터 분석 실습 포털 &nbsp;·&nbsp; Cloudflare Pages 배포용 정적 웹사이트</p>
     </footer>
   </div>
 </body>
