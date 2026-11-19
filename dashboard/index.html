@@ -110,6 +110,15 @@
     .tag-teal { background: #ccfbf1; color: #0f766e; }
     .tag-purple { background: #f3e8ff; color: #7e22ce; }
     .tag-indigo { background: #e0e7ff; color: #3730a3; }
+    .tag-emerald { background: #d1fae5; color: #047857; }
+    .btn-link.emerald {
+      background: #059669;
+      box-shadow: 0 2px 4px rgba(5, 150, 105, 0.25);
+    }
+    .btn-link.emerald:hover {
+      background: #047857;
+    }
+
     .card-title {
       font-size: 21px;
       font-weight: 750;
@@ -213,7 +222,7 @@
       <div class="kpi-summary-row">
         <div class="kpi-mini-card">
           <span>포털 수록 회차</span>
-          <strong>02회 ~ 05회차 (4개 주제)</strong>
+          <strong>02회 ~ 06회차 (5개 주제)</strong>
         </div>
         <div class="kpi-mini-card">
           <span>제조 품질 데이터</span>
@@ -337,6 +346,34 @@
           05회차-매장 주문량 예측 검토 열기 &nbsp;→
         </a>
       </article>
+
+      <!-- 06회차 대시보드 (신규 추가) -->
+      <article class="dash-card">
+        <div>
+          <span class="card-tag tag-emerald">06회차 분석 · 예측 평가 및 행사 정보 보완</span>
+          <h2 class="card-title">06회차-매장 주문량 예측 검토</h2>
+          <p class="card-sub">Store Orders Forecast Evaluation & Event Integration Dashboard</p>
+          <div class="card-desc">
+            05회차 첫 선형회귀 모델의 한계를 진단하고, 운영정보(월·광고·공휴일)와 주변 행사 데이터를 결합하여 예측력을 극대화한 고도화 대시보드입니다.
+            <ul>
+              <li><strong>4대 모델 종합 비교:</strong> 매장평균 ➔ 첫 회귀 ➔ 정보추가 ➔ 행사추가 (최종 MAE 46.0건, RMSE 56.3건 달성)</li>
+              <li><strong>매장별·일별 오차 진단:</strong> 잠실역 98.9% 과소 예측 원인 규명 및 0 기준선 일별 오차 시계열 분석</li>
+              <li><strong>행사일 vs 비행사일 심층 비교:</strong> 행사일 오차 116.5건 ➔ 48.3건(58.5%↓) 대폭 개선 및 전체 평균 착시 규명</li>
+              <li><strong>운영 최적화 검토 의견:</strong> 200건 이상 초대형 펑크 0건 완전 소멸, 행사일 인력 1~2인 추가 배치 가이드</li>
+            </ul>
+          </div>
+          <div class="badge-list">
+            <span class="badge-item">인터랙티브 Plotly</span>
+            <span class="badge-item">4대 모델 성능 비교</span>
+            <span class="badge-item">행사 효과 심층 검증</span>
+            <span class="badge-item">독립 매장 필터 연동</span>
+          </div>
+        </div>
+        <a href="./order-forecast-06/orders_dashboard_06.html" class="btn-link emerald">
+          06회차-매장 주문량 예측 검토 열기 &nbsp;→
+        </a>
+      </article>
+
     </main>
 
     <footer>

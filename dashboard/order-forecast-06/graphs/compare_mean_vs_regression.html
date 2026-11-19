@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기준 예측(매장별 평균) vs 첫 선형회귀 모델 오차 비교</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+            padding: 32px;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #0f172a;
+        }
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        .chart-box {
+            position: relative;
+            height: 380px;
+            margin-bottom: 32px;
+        }
+        .metrics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        .metrics-table th, .metrics-table td {
+            padding: 12px 16px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .metrics-table th {
+            background-color: #f1f5f9;
+            color: #475569;
+            font-weight: 600;
+        }
+        .highlight-good {
+            color: #059669;
+            font-weight: 600;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .card-title {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .card-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-blue { background: #e0f2fe; color: #0369a1; }
+        .badge-green { background: #dcfce7; color: #15803d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 매장별 평균 vs 첫 선형회귀 모델 성능 비교</h1>
+        <p class="subtitle">평가 기간: 2026-06-01 ~ 2026-08-31 (총 460건 기록)</p>
+
+        <div class="chart-box">
+            <canvas id="comparisonChart"></canvas>
+        </div>
+
+        <table class="metrics-table">
+            <thead>
+                <tr>
+                    <th>모델명</th>
+                    <th>사용 변수 / 로직</th>
+                    <th>MAE (평균 절대 오차)</th>
+                    <th>RMSE (평균 제곱근 오차)</th>
+                    <th>개선도 (MAE 기준)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>매장별 평균</strong> <span class="badge badge-blue">기준 예측</span></td>
+                    <td>학습 기간 매장별 과거 평균치 고정 부여</td>
+                    <td>59.4건</td>
+                    <td>74.9건</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td><strong>첫 회귀</strong> <span class="badge badge-green">머신러닝</span></td>
+                    <td>매장 + 요일 + 영업시간 + 할인율</td>
+                    <td><span class="highlight-good">56.3건</span></td>
+                    <td><span class="highlight-good">70.0건</span></td>
+                    <td><span class="highlight-good">▼ 3.1건 (약 5.2% 개선)</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-title">💡 첫 회귀의 개선 효과</div>
+                <div class="card-value">-3.1건 (MAE) / -4.9건 (RMSE)</div>
+                <p style="font-size: 13px; color: #64748b; margin-top: 6px;">
+                    요일별 변동(주말 피크 등)과 영업시간·할인율 계획을 반영하여 단순 매장 평균보다 오차가 줄어들었습니다.
+                </p>
+            </div>
+            <div class="card">
+                <div class="card-title">⚠️ 남겨진 과제 (대형 오차)</div>
+                <div class="card-value">RMSE 70.0건 유지</div>
+                <p style="font-size: 13px; color: #64748b; margin-top: 6px;">
+                    MAE 대비 RMSE가 여전히 높아, 특정 날짜의 계절 이벤트(여름방학)나 공휴일 등 대형 오차가 여전히 발생하고 있습니다.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('comparisonChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['매장별 평균 (기준 모델)', '첫 회귀 (선형회귀 모델)'],
+                datasets: [
+                    {
+                        label: 'MAE (평균 절대 오차)',
+                        data: [59.4, 56.3],
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 6,
+                        barPercentage: 0.6
+                    },
+                    {
+                        label: 'RMSE (평균 제곱근 오차)',
+                        data: [74.9, 70.0],
+                        backgroundColor: '#ef4444',
+                        borderRadius: 6,
+                        barPercentage: 0.6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw + '건';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 90,
+                        title: {
+                            display: true,
+                            text: '주문건수 (건)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

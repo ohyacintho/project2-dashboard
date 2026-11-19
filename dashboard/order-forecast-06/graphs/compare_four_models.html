@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문량 예측 4대 모델 성능 비교 (매장별 평균 ~ 행사정보 추가)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 30px 20px;
+        }
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.06);
+            padding: 32px;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #0f172a;
+        }
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        .chart-box {
+            position: relative;
+            height: 400px;
+            margin-bottom: 28px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            margin-bottom: 24px;
+        }
+        th, td {
+            padding: 12px 14px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            background-color: #f1f5f9;
+            color: #475569;
+            font-weight: 600;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-gray { background: #f1f5f9; color: #475569; }
+        .badge-blue { background: #dbeafe; color: #1d4ed8; }
+        .badge-purple { background: #f3e8ff; color: #7e22ce; }
+        .badge-green { background: #dcfce7; color: #15803d; }
+        .highlight-green {
+            color: #15803d;
+            font-weight: 700;
+        }
+        .highlight-purple {
+            color: #7e22ce;
+            font-weight: 700;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        .summary-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .card-stage {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .card-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+        .card-metric {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.5;
+        }
+        .card-metric strong {
+            color: #0f172a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 매장 주문량 예측 모델 4종 종합 비교</h1>
+        <p class="subtitle">비교 기간: 2026-06-01 ~ 2026-08-31 (460건) | 매장별 평균 → 첫 회귀 → 정보추가 → 행사정보 추가</p>
+
+        <div class="chart-box">
+            <canvas id="fourModelsChart"></canvas>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>모델명</th>
+                    <th>투입 변수 구성</th>
+                    <th>MAE (평균 오차)</th>
+                    <th>RMSE (대형 오차)</th>
+                    <th>기준(평균) 대비 개선</th>
+                    <th>직전 모델 대비 개선</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>매장별 평균</strong> <span class="badge badge-gray">기준</span></td>
+                    <td>과거 매장별 평균치 고정값</td>
+                    <td>59.4건</td>
+                    <td>74.9건</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td><strong>첫 회귀</strong> <span class="badge badge-blue">05회차</span></td>
+                    <td>매장 + 요일 + 영업예정시간 + 예정할인율</td>
+                    <td>56.3건</td>
+                    <td>70.0건</td>
+                    <td>▼ 3.1건</td>
+                    <td>▼ 3.1건</td>
+                </tr>
+                <tr>
+                    <td><strong>정보추가</strong> <span class="badge badge-purple">운영정보</span></td>
+                    <td>첫 회귀 + 광고예산 + 공휴일여부 + 월</td>
+                    <td>47.4건</td>
+                    <td>60.8건</td>
+                    <td>▼ 12.0건</td>
+                    <td>▼ 8.9건</td>
+                </tr>
+                <tr>
+                    <td><strong>행사정보 추가</strong> <span class="badge badge-green">최종 모델</span></td>
+                    <td>정보추가 + <strong>주변행사여부 (+106.7건)</strong></td>
+                    <td class="highlight-green">46.0건</td>
+                    <td class="highlight-green">56.3건</td>
+                    <td class="highlight-green">▼ 13.4건 (22.6%↓)</td>
+                    <td class="highlight-green">RMSE ▼ 4.5건 집중 감소</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="card-stage">Step 1</div>
+                <div class="card-name">매장별 평균</div>
+                <div class="card-metric">MAE: <strong>59.4건</strong><br>RMSE: <strong>74.9건</strong><br><small style="color:#64748b">요일/계절 무시 단순 평균</small></div>
+            </div>
+            <div class="summary-card">
+                <div class="card-stage">Step 2</div>
+                <div class="card-name">첫 회귀</div>
+                <div class="card-metric">MAE: <strong>56.3건</strong><br>RMSE: <strong>70.0건</strong><br><small style="color:#64748b">주말 피크·영업시간 반영</small></div>
+            </div>
+            <div class="summary-card">
+                <div class="card-stage">Step 3</div>
+                <div class="card-name">정보추가</div>
+                <div class="card-metric">MAE: <strong>47.4건</strong><br>RMSE: <strong>60.8건</strong><br><small style="color:#64748b">여름 성수기·광고·공휴일</small></div>
+            </div>
+            <div class="summary-card" style="border-color:#86efac; background:#f0fdf4;">
+                <div class="card-stage" style="color:#16a34a;">Step 4 (Best)</div>
+                <div class="card-name" style="color:#15803d;">행사정보 추가</div>
+                <div class="card-metric">MAE: <strong style="color:#15803d;">46.0건</strong><br>RMSE: <strong style="color:#15803d;">56.3건</strong><br><small style="color:#15803d">체육·축제 대형 오차 해결</small></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('fourModelsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['매장별 평균', '첫 회귀', '정보추가', '행사정보 추가'],
+                datasets: [
+                    {
+                        label: 'MAE (평균 절대 오차)',
+                        data: [59.4, 56.3, 47.4, 46.0],
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 6,
+                        barPercentage: 0.65
+                    },
+                    {
+                        label: 'RMSE (평균 제곱근 오차)',
+                        data: [74.9, 70.0, 60.8, 56.3],
+                        backgroundColor: '#ef4444',
+                        borderRadius: 6,
+                        barPercentage: 0.65
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw + '건';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 85,
+                        title: {
+                            display: true,
+                            text: '주문건수 (건)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
