@@ -217,12 +217,12 @@
     <header>
       <span class="eyebrow">Project 2 Integrated Dashboard Portal</span>
       <h1>Project2 대시보드</h1>
-      <p class="subtitle">제조 부품 품질 검사부터 카페 매장 주문량 머신러닝 예측·과적합 진단까지 통합 데이터 분석 포털 (Cloudflare Pages 배포용)</p>
+      <p class="subtitle">제조 부품 품질 검사부터 카페 매장 주문량 예측, 출고 전 배송 지연 분류·운영 대시보드까지 통합 데이터 분석 포털 (Cloudflare Pages 배포용)</p>
       
       <div class="kpi-summary-row">
         <div class="kpi-mini-card">
           <span>포털 수록 회차</span>
-          <strong>02회 ~ 10회차 (7개 주제)</strong>
+          <strong>02회 ~ 12회차 (8개 주제)</strong>
         </div>
         <div class="kpi-mini-card">
           <span>제조 품질 데이터</span>
@@ -425,6 +425,33 @@
         </div>
         <a href="./delivery-model-10/delivery_model_review.html" class="btn-link" style="background: #d97706;">
           10회차-배송 모델 비교 결과 열기 &nbsp;→
+        </a>
+      </article>
+
+      <!-- 12회차 대시보드 (신규 추가) -->
+      <article class="dash-card">
+        <div>
+          <span class="card-tag tag-teal" style="background: #dbeafe; color: #1e40af; font-weight: 800;">12회차 분석 · 배송 지연 운영 &amp; 모델 고도화</span>
+          <h2 class="card-title">12회차-배송 운영 현황 대시보드</h2>
+          <p class="card-sub">Delivery Operations Control &amp; Priority Triage Dashboard (2026-11-28)</p>
+          <div class="card-desc">
+            로지스틱 C·가중치 비교, 스케일링 검증, 6개 모델 통합 평가 및 9월 최종 검증을 거쳐 확정한 모델(가중치 적용 랜덤포레스트 balanced · 50%)로 10월 오전 9시 운영 주문을 사전 점검하는 대시보드입니다.
+            <ul>
+              <li><strong>실시간 조회 &amp; KPI 3종:</strong> 최신 점검일(2026-10-20)·최근 3일·최근 7일·10월 전체, 센터·운송사 조회 및 초기화</li>
+              <li><strong>대응 우선순위 1~4순위:</strong> 여유일수·재고 상태 기준 긴급도 정렬, 검색 및 조건 일치 CSV 다운로드</li>
+              <li><strong>물류센터 인터랙티브 분포:</strong> 센터별 전체·위험 주문·예측 위험 비율 차트 및 클릭 연동 필터</li>
+              <li><strong>모델 기준 · 비교 참고 백업 탭:</strong> 6개 모델 비교표, 7~8월 vs 9월 최종 평가 및 현업 주의사항 분리 수록</li>
+            </ul>
+          </div>
+          <div class="badge-list">
+            <span class="badge-item">운영·백업 2단 탭</span>
+            <span class="badge-item">인터랙티브 Plotly</span>
+            <span class="badge-item">1~4순위 CSV export</span>
+            <span class="badge-item">사후결과 비포함 자립 HTML</span>
+          </div>
+        </div>
+        <a href="./delivery_operations/delivery_operations.html" class="btn-link" style="background: #0f766e;">
+          12회차-배송 운영 현황 대시보드 열기 &nbsp;→
         </a>
       </article>
 
