@@ -21,6 +21,7 @@ DASHBOARD_HTML = RESULTS_DIR / "delivery_operations.html"
 OUT_CORE_PNG = GRAPHS_DIR / "15_운영대시보드_제출용_캡처.png"
 OUT_FULL_PNG = GRAPHS_DIR / "16_운영대시보드_전체화면_캡처.png"
 OUT_MODEL_PNG = GRAPHS_DIR / "17_운영대시보드_모델참고탭_캡처.png"
+OUT_SLACK_PNG = GRAPHS_DIR / "18_운영대시보드_Slack공유용_1순위점검_캡처.png"
 
 
 def get_driver():
@@ -243,6 +244,21 @@ def main() -> None:
         time.sleep(0.55)
         model_h = int(driver.execute_script("return document.documentElement.scrollHeight;"))
         cdp_shot(driver, 1440, model_h + 18, OUT_MODEL_PNG)
+
+        # Capture 18_ Slack-ready view (Tab 1 Ops + Priority 1 selected -> KPIs + Center + Top Priority Rows)
+        driver.find_element(By.ID, "btn-back-ops").click()
+        time.sleep(0.35)
+        driver.find_element(By.ID, "prio-card-1").click()
+        time.sleep(0.35)
+        slack_h = int(
+            driver.execute_script(
+                """
+                const listCard = document.getElementById('list-table-wrap').closest('.card');
+                return Math.ceil(listCard.getBoundingClientRect().bottom + window.scrollY + 20);
+                """
+            )
+        )
+        cdp_shot(driver, 1440, slack_h, OUT_SLACK_PNG)
 
         try:
             logs = driver.get_log("browser")

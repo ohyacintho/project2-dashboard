@@ -38,6 +38,7 @@ SHEET_ITEMS = [
     ("15_운영대시보드_제출용_캡처.png", "15. 배송 운영 대시보드 핵심 캡처"),
     ("16_운영대시보드_전체화면_캡처.png", "16. 배송 운영 대시보드 전체화면 캡처"),
     ("17_운영대시보드_모델참고탭_캡처.png", "17. 배송 운영 대시보드 모델기준 백업탭"),
+    ("18_운영대시보드_Slack공유용_1순위점검_캡처.png", "18. Slack 공유용(운영+1순위 목록)"),
 ]
 
 
@@ -151,7 +152,7 @@ def make_contact_sheet() -> None:
     for j in range(len(SHEET_ITEMS), len(axes_flat)):
         axes_flat[j].axis("off")
 
-    fig.suptitle("[2026-11-28] 12회차 배송 지연 예측 전체 결과물 한눈에 보기 (01 ~ 17)", fontsize=15.5, fontweight="bold", y=0.989)
+    fig.suptitle("[2026-11-28] 12회차 배송 지연 예측 전체 결과물 한눈에 보기 (01 ~ 18)", fontsize=15.5, fontweight="bold", y=0.989)
     plt.tight_layout(rect=[0.01, 0.01, 0.99, 0.968], h_pad=2.2, w_pad=1.5)
     fig.savefig(OUT_SHEET, dpi=170)
     plt.close(fig)
