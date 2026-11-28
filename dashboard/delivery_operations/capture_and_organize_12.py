@@ -39,6 +39,8 @@ SHEET_ITEMS = [
     ("16_운영대시보드_전체화면_캡처.png", "16. 배송 운영 대시보드 전체화면 캡처"),
     ("17_운영대시보드_모델참고탭_캡처.png", "17. 배송 운영 대시보드 모델기준 백업탭"),
     ("18_운영대시보드_Slack공유용_1순위점검_캡처.png", "18. Slack 공유용(운영+1순위 목록)"),
+    ("19_추가실습3_개선대시보드_제출용_캡처.png", "19. [선택3] 개선 워크벤치 핵심 캡처"),
+    ("20_추가실습3_개선대시보드_전체화면_캡처.png", "20. [선택3] 개선 워크벤치 전체화면"),
 ]
 
 
@@ -130,11 +132,11 @@ def capture_and_verify_html() -> None:
 
 
 def make_contact_sheet() -> None:
-    """Create 00_전체_결과물_한눈에보기.png covering 01~16 in a 6x3 grid."""
+    """Create 00_전체_결과물_한눈에보기.png covering 01~20 in a 5x4 grid."""
     plt.rcParams["font.family"] = "Malgun Gothic"
     plt.rcParams["axes.unicode_minus"] = False
 
-    fig, axes = plt.subplots(6, 3, figsize=(21.5, 32.0))
+    fig, axes = plt.subplots(5, 4, figsize=(25.5, 27.0))
     axes_flat = axes.flatten()
     for ax, (fname, caption) in zip(axes_flat, SHEET_ITEMS):
         fpath = GRAPHS_DIR / fname
@@ -143,7 +145,7 @@ def make_contact_sheet() -> None:
             ax.imshow(img)
         else:
             ax.text(0.5, 0.5, "미생성", ha="center", va="center", fontsize=11, color="#94A3B8")
-        ax.set_title(caption, fontsize=11.0, fontweight="bold", pad=8)
+        ax.set_title(caption, fontsize=10.5, fontweight="bold", pad=7)
         ax.set_xticks([])
         ax.set_yticks([])
         for sp in ax.spines.values():
@@ -152,7 +154,7 @@ def make_contact_sheet() -> None:
     for j in range(len(SHEET_ITEMS), len(axes_flat)):
         axes_flat[j].axis("off")
 
-    fig.suptitle("[2026-11-28] 12회차 배송 지연 예측 전체 결과물 한눈에 보기 (01 ~ 18)", fontsize=15.5, fontweight="bold", y=0.989)
+    fig.suptitle("[2026-11-28] 12회차 배송 지연 예측 전체 결과물 한눈에 보기 (01 ~ 20)", fontsize=15.5, fontweight="bold", y=0.989)
     plt.tight_layout(rect=[0.01, 0.01, 0.99, 0.968], h_pad=2.2, w_pad=1.5)
     fig.savefig(OUT_SHEET, dpi=170)
     plt.close(fig)
